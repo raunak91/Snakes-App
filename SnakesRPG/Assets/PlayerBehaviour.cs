@@ -1,42 +1,1 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class PlayerBehaviour : MonoBehaviour {
-    
-    public void Move(int i) {
-		Integer currentPositionX = this.transform.position.x;
-		Integer currentPositionY = this.transform.position.y;
-		Integer finalPosition = (MyGameManager.instance.BoardX -1) * (MyGameManager.instance.BoardY - 1);
-		Integer currentPosition = currentPositionX * currentPositionY;
-		Integer expectedPosition = currentPosition + i;
-
-		if(expectedPosition <= finalPosition) {
-			if (currentPositionY%2 == 0) {
-				if(currentPositionX < MyGameManager.instance.BoardX) {
-					MoveTo(currentPositionX + 1, currentPositionY);
-				} else {
-					MoveTo(currentPositionX, currentPositionY + 1);
-				}
-			} else {
-				if(currentPositionX > 0) {
-					MoveTo(currentPositionX - 1, currentPositionY);
-				} else {
-					MoveTo(currentPositionX, currentPositionY + 1);
-				}
-			}
-		} else {
-			return;
-		}
-
-		Move(i-1);
-		return;
-
-    }
-
-    public void MoveTo(int X, int Y) {
-        if (!(X < 5 && X >= -5)) return;
-        if (!(Y < 5 && Y >= -5)) return;
-
-        this.transform.position = new Vector3(X, Y, this.transform.position.z);
-    }
-}
+using UnityEngine;using System.Collections;using System.Collections.Generic;public class PlayerBehaviour : MonoBehaviour {        public void Move(int i) {		int currentPositionX = (int) this.transform.position.x;		int currentPositionY = (int) this.transform.position.y;		int finalPosition = ((int) MyGameManager.instance.BoardX -1) * ((int) MyGameManager.instance.BoardY - 1);        List<int> position = resolve(currentPositionX, currentPositionY, i, ((int)MyGameManager.instance.BoardX));        MoveTo(position[0], position[1]);		return;    }    private List<int> resolve(int currentX, int currentY, int move, int max) {    	List<int> position = new List<int>();        if (currentY%2 == 0) {    		int expectedX = currentX + move;			if(expectedX < max) {				position.Add(expectedX);				position.Add(currentY);			} else {				int surplus = expectedX - 1 - max;				position = resolve(max - 1, currentY + 1, surplus - 1, max);			}		} else {			int expectedX = currentX - move;			if(expectedX >= 0) {				position.Add(expectedX);				position.Add(currentY);			} else {				int surplus = 0 - expectedX;				position = resolve(0, currentY + 1, surplus - 1, max);			}		}		return position;    }    public void MoveTo(int X, int Y) {        if (!(X < MyGameManager.instance.BoardX && X >= 0)) return;        if (!(Y < MyGameManager.instance.BoardY && Y >= 0)) return;        this.transform.position = new Vector3(X, Y, this.transform.position.z);    }}
