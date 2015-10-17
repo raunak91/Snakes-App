@@ -1,1 +1,0 @@
-﻿using UnityEngine;using System.Collections;public class TestScript : MonoBehaviour {    public PlayerBehaviour p;    public int MoveBy;    public int MoveToX;    public int MoveToY;	void Update () {        if (Input.GetKeyDown(KeyCode.Space)) {            p.Move(MoveBy);        }		}}

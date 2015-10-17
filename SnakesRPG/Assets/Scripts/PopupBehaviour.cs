@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class PopupBehaviour : MonoBehaviour {
-    public int PopupValue;
-
+    public int PopupValue = 0;
 	// Use this for initialization
 	void Start () {
 	
